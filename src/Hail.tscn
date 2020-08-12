@@ -5,7 +5,11 @@
 
 [node name="Hail" type="RigidBody2D" groups=[
 "hail",
+"knows_about_repellers",
 ]]
+collision_layer = 3
+collision_mask = 3
+gravity_scale = 10.0
 contact_monitor = true
 script = ExtResource( 2 )
 
@@ -16,4 +20,13 @@ color = Color( 0.976471, 0.0901961, 0.396078, 1 )
 wait_time = 3.0
 one_shot = true
 autostart = true
+
+[node name="ForceDeathTimer" type="Timer" parent="."]
+wait_time = 9.0
+one_shot = true
+autostart = true
+
+[node name="Tween" type="Tween" parent="."]
 [connection signal="timeout" from="CanDieTimer" to="." method="_on_CanDieTimer_timeout"]
+[connection signal="timeout" from="ForceDeathTimer" to="." method="_on_ForceDeathTimer_timeout"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

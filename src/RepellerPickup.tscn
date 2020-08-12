@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://CircleShape.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Component_WrapsInScreen.gd" type="Script" id=2]
+
+[node name="RepellerPickup" type="RigidBody2D"]
+collision_layer = 6
+collision_mask = 6
+gravity_scale = 5.0
+can_sleep = false
+
+[node name="CircleShape" parent="." instance=ExtResource( 1 )]
+color = Color( 0.717647, 0.74902, 0.407843, 1 )
+
+[node name="Component_WrapsInScreen" type="Node" parent="."]
+script = ExtResource( 2 )

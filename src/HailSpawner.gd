@@ -4,15 +4,14 @@ class_name HailSpawner
 
 const MARGIN: float = 20.0
 
-export (Curve) var _respawn_time_progression
-export var _total_game_time: float = 120.01
-
-onready var _spawn_timer: Timer = $SpawnTimer
-
 func _ready():
 	randomize()
+	Globals.connect("restart", self, "_on_restart")
 
-func clear_hail():
+func _on_restart():
+	_clear_hail()
+
+func _clear_hail():
 	for c in get_children():
 		if c is Hail:
 			c.queue_free()
@@ -34,7 +33,5 @@ func spawn_hail():
 	new_hail.update_trajectory()
 
 
-func _on_SpawnTimer_timeout():
+func _on_DecayingGameTimer_timeout():
 	spawn_hail()
-	_spawn_timer.wait_time = _respawn_time_progression.interpolate_baked(min(1.0, Globals.get_game_time()/_total_game_time))
-	_spawn_timer.start()

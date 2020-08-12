@@ -15,7 +15,6 @@ func _ready():
 
 func _on_restart():
 	_animation_player.play("restart")
-	_hail_spawner.clear_hail()
 	_spawn_player()
 
 func _on_game_over():
@@ -25,3 +24,7 @@ func _spawn_player():
 	var new_player: Node2D = preload("res://Player.tscn").instance()
 	_game_root.add_child(new_player)
 	new_player.connect("dead", self, "_on_player_dead")
+
+
+func _on_DecayingGameTimer_timeout():
+	pass # Replace with function body.

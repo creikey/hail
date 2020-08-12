@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Circle.gd" type="Script" id=1]
+[ext_resource path="res://DottedCircle.gd" type="Script" id=2]
+[ext_resource path="res://RepellerEffector.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 50.0
+
+[node name="RepellerEffector" type="Area2D"]
+space_override = 3
+gravity_point = true
+gravity = -1024.0
+collision_layer = 5
+collision_mask = 5
+script = ExtResource( 3 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Circle" type="Node2D" parent="."]
+script = ExtResource( 1 )
+color = Color( 0.796078, 0.796078, 0.745098, 1 )
+radius = 7.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="DottedCircle" type="Node2D" parent="."]
+rotation = 2453.02
+script = ExtResource( 2 )
+color = Color( 0.796078, 0.796078, 0.745098, 1 )
+dash_size = 13.316
+dash_gap = 15.0
+radius = 50.0
+width = 3.0
+rotation_speed = 1.0
+paused = false
+[connection signal="body_exited" from="." to="." method="_on_RepellerEffector_body_exited"]

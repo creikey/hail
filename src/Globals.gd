@@ -12,9 +12,9 @@ func _process(delta):
 
 func _input(event):
 #	print(event)
-	if is_player_alive() or not event.is_pressed() or event.is_echo():
+	if is_player_alive():
 		return
-	if event is InputEventScreenTouch or event is InputEventKey or (event.device == 0 and event is InputEventJoypadButton):
+	if Util.secondary_button_pressed(event):
 		_restart()
 
 func _restart():

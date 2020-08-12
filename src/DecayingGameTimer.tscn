@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://DecayingTimer.gd" type="Script" id=1]
+
+[sub_resource type="Curve" id=9]
+min_value = 0.01
+max_value = 0.5
+_data = [ Vector2( 0, 0.5 ), 0.0, -1.26603, 0, 0, Vector2( 0.233333, 0.393091 ), 0.0, 0.0, 0, 0, Vector2( 0.413333, 0.116909 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.01 ), 0.0, 0.0, 0, 0 ]
+
+[node name="DecayingGameTimer" type="Timer"]
+one_shot = true
+autostart = true
+script = ExtResource( 1 )
+_time_progression = SubResource( 9 )
+_total_game_time = 90.0
+[connection signal="timeout" from="." to="." method="_on_DecayingGameTimer_timeout"]
