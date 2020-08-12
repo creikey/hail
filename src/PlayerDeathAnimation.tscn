@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://WhiteDot.png" type="Texture" id=1]
+[ext_resource path="res://PlayerDeathAnimation.gd" type="Script" id=2]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.549637, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[node name="PlayerDeathAnimation" type="CPUParticles2D"]
+emitting = false
+amount = 25
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.21
+texture = ExtResource( 1 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 110.89
+initial_velocity_random = 0.74
+damping = 12.56
+scale_amount = 0.26
+scale_amount_curve = SubResource( 1 )
+script = ExtResource( 2 )

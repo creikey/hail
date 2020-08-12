@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://CircleShape.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Hail.gd" type="Script" id=2]
+
+[node name="Hail" type="RigidBody2D" groups=[
+"hail",
+]]
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="CircleShape" parent="." instance=ExtResource( 1 )]
+color = Color( 0.976471, 0.0901961, 0.396078, 1 )
+
+[node name="CanDieTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+[connection signal="timeout" from="CanDieTimer" to="." method="_on_CanDieTimer_timeout"]

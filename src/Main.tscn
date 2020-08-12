@@ -1,0 +1,232 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://HailSpawner.gd" type="Script" id=3]
+[ext_resource path="res://Rowdies-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://InfoLabel.gd" type="Script" id=5]
+
+[sub_resource type="DynamicFont" id=6]
+size = 72
+font_data = ExtResource( 4 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "game_over"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("ViewportContainer:material:shader_param/radius")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.366021, 1 ),
+"update": 0,
+"values": [ 0.0, 5.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ViewportContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("GameOver/InfoCenterContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 3.03143, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "restart"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ViewportContainer:material:shader_param/radius")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 6.27667, 1 ),
+"update": 0,
+"values": [ 5.0, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ViewportContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("GameOver/InfoCenterContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.138696, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform float radius = 2.0;
+
+// Blurs the screen in the X-direction.
+void fragment() {
+	vec2 pos = SCREEN_UV;
+	vec3 col = texture(TEXTURE, pos).rgb;
+	vec2 ps = TEXTURE_PIXEL_SIZE;
+	
+	col+=texture(TEXTURE,pos + vec2(0,-radius)*ps).rgb;
+	col+=texture(TEXTURE,pos + vec2(0,radius)*ps).rgb;
+	col+=texture(TEXTURE,pos + vec2(-radius,0)*ps).rgb;
+	col+=texture(TEXTURE,pos + vec2(radius,0)*ps).rgb;
+	col/=5.0;
+	COLOR=vec4(col, 1.0);
+}
+//const int mSize = 20;
+////uniform int mSize : hint_range(0, 50);
+//
+//float normpdf(in float x, in float sigma)
+//{
+//	return 0.39894*exp(-0.5*x*x/(sigma*sigma))/sigma;
+//}
+//
+//void fragment() {
+//	const int kSize = (mSize-1)/2;
+//	float kernel[20];
+//	vec3 final_colour = vec3(0.0);
+//
+//	//create the 1-D kernel
+//	float sigma = 7.0;
+//	float Z = 0.0;
+//	for (int j = 0; j <= kSize; ++j)
+//	{
+//		kernel[kSize+j] = kernel[kSize-j] = normpdf(float(j), sigma);
+//	}
+//
+//	//get the normalization factor (as the gaussian has been clamped)
+//	for (int j = 0; j < mSize; ++j)
+//	{
+//		Z += kernel[j];
+//	}
+//
+//	//read out the texels
+//	for (int i=-kSize; i <= kSize; ++i)
+//	{
+//		for (int j=-kSize; j <= kSize; ++j)
+//		{
+//			final_colour += kernel[kSize+j]*kernel[kSize+i]*texture(TEXTURE, (FRAGCOORD.xy+vec2(float(i),float(j))) / (1.0 / SCREEN_PIXEL_SIZE)).rgb;
+//
+//		}
+//	}
+//
+//	COLOR = texture(TEXTURE, UV);
+////	COLOR = vec4(final_colour/(Z*Z), 1.0);
+//}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/radius = 0.0
+
+[sub_resource type="Curve" id=8]
+max_value = 0.5
+_data = [ Vector2( 0, 0.5 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.0327273 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+_game_root_path = NodePath("ViewportContainer/Viewport")
+_hail_spawner_path = NodePath("ViewportContainer/Viewport/HailSpawner")
+
+[node name="Game" type="CanvasLayer" parent="."]
+
+[node name="BlurRect" type="ColorRect" parent="Game"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="InfoCenterContainer" type="CenterContainer" parent="GameOver"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="V" type="VBoxContainer" parent="GameOver/InfoCenterContainer"]
+margin_left = 250.0
+margin_top = 405.0
+margin_right = 650.0
+margin_bottom = 495.0
+
+[node name="InfoLabel" type="Label" parent="GameOver/InfoCenterContainer/V"]
+margin_right = 400.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 400, 0 )
+custom_fonts/font = SubResource( 6 )
+text = "30 seconds"
+align = 1
+valign = 1
+autowrap = true
+script = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/game_over = SubResource( 5 )
+anims/restart = SubResource( 7 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+material = SubResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 900.0
+margin_bottom = 900.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 900, 900 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="HailSpawner" type="Node2D" parent="ViewportContainer/Viewport"]
+script = ExtResource( 3 )
+_respawn_time_progression = SubResource( 8 )
+_total_game_time = 10.0
+
+[node name="SpawnTimer" type="Timer" parent="ViewportContainer/Viewport/HailSpawner"]
+wait_time = 0.115
+one_shot = true
+autostart = true
+[connection signal="timeout" from="ViewportContainer/Viewport/HailSpawner/SpawnTimer" to="ViewportContainer/Viewport/HailSpawner" method="_on_SpawnTimer_timeout"]
